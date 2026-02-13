@@ -1,0 +1,14 @@
+
+package com.tienda.repository;
+
+import com.tienda.domain.Categoria;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/**
+ *
+ * @author Cesar Porras
+ */
+public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
+    public List<Categoria> findByActivoTrue();
+}
