@@ -40,6 +40,7 @@ public class Producto implements Serializable {
     private String rutaImagen;
     private boolean activo;
     
+    //se refine la relacion con tabla categoria
     @ManyToOne
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
