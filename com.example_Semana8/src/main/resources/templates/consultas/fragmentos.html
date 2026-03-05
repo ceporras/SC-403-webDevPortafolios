@@ -28,7 +28,7 @@
         </section>
 
         <!-- fragmento 2 para el listado de tarjetas de productos -->
-        <section th:fragment="tarjetas" class="container py-4">
+        <section th:fragment="tarjetas-producto" class="container py-4">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
                 <div th:each="p : ${productos}" class="col">
                     <div class="card h-100 shadow-sm">
@@ -63,16 +63,41 @@
                 </div>
             </div>
         </section>
-        
-        
+
+        <!-- fragmento 2 para el listado de tarjetas de CATEGORIAS -->
+        <section th:fragment="tarjetas-categoria" class="container py-4">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+                <div th:each="c : ${categorias}" class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="d-flex justify-content-center align-items-center bg-light p-3" style="height: 200px;">
+                            <img th:src="@{${c.rutaImagen}}" class="img-fluid" 
+                                 th:alt="${c.descripcion}" 
+                                 style="max-height: 100%; object-fit: contain;"/>
+                        </div>
+                        <div class="card-header bg-white">
+                            <h5 class="card-title text-center text-truncate mb-0" th:text="${c.descripcion}">Descripcion</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
         <section th:fragment='consultas' class='row row-cols-4 p-2'>
+            <!-- comento los anteriores de la clase para no llenar demasiado la pantalla de forms
             <div th:replace="~{consultas/fragmentos :: formConsulta('primary',#{consultas.derivadas},'/consultas/consultaDerivada')}"/>
             <div th:replace="~{consultas/fragmentos :: formConsulta('warning',#{consultas.jpql},'/consultas/consultaJPQL')}"/>
             <div th:replace="~{consultas/fragmentos :: formConsulta('success',#{consultas.sql},'/consultas/consultaSQL')}"/>
-            <div class='card'><p>Acá va su Práctica #2</p></div>
+            -->
+            <div th:replace="~{consultas/fragmentos :: formConsultaProducto('primary',#{consultas.derivadasAdv1},'/consultas/consultaDerivadaProducto')}"/>
+            <div th:replace="~{consultas/fragmentos :: formConsultaProducto('warning',#{consultasAdv1.jpql},'/consultas/consultaAdvProductoJPQL')}"/>
+            <div th:replace="~{consultas/fragmentos :: formConsultaProducto('success',#{consultasAdv1.sql},'/consultas/consultaAdvProductoSQL')}"/>
+            <div th:replace="~{consultas/fragmentos :: formConsultaCategoria('primary',#{consultas.derivadasAdv2},'/consultas/consultaDerivadaCategoria')}"/>
+            <div th:replace="~{consultas/fragmentos :: formConsultaCategoria('warning',#{consultasAdv2.jpql},'/consultas/consultaAdvCategoriaJPQL')}"/>
+            <div th:replace="~{consultas/fragmentos :: formConsultaCategoria('success',#{consultasAdv2.sql},'/consultas/consultaAdvCategoriaSQL')}"/>
         </section>
 
-        <div th:fragment='formConsulta(colorForm, textoForm, urlForm)'>
+        <div th:fragment='formConsultaProducto(colorForm, textoForm, urlForm)'>
             <form method="post" th:action='@{${urlForm}}' class='was-validated'>
                 <div class='card p-2'>
                     <div class="card-header text-center text-white" th:classappend="${'bg-'+colorForm}">
@@ -87,6 +112,43 @@
                         <div class='mb-3'>
                             <label>[[#{consultas.precio.superior}]]</label>
                             <input type="number" name='precioSup' th:value='${precioSup}'
+                                   class='form-control' min="0" required/>
+                        </div>
+                        <div class='mb-3'>
+                            <label>Minimo de Existencias</label>
+                            <input type="number" name='minExistencias' th:value='${minExistencias}'
+                                   class='form-control' min="0" required/>
+                        </div>
+                        <div class='mb-3'>
+                            <label>Filtro de descripcion de categoria</label>
+                            <input type="text" name='descFiltro' th:value='${descFiltro}'
+                                   class='form-control' required/>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type='submit' class='btn text-white' th:classappend="${'btn-'+colorForm}">
+                            <i class='fa-solid fa-magnifying-glass'></i> [[${textoForm}]]
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div th:fragment='formConsultaCategoria(colorForm, textoForm, urlForm)'>
+            <form method="post" th:action='@{${urlForm}}' class='was-validated'>
+                <div class='card p-2'>
+                    <div class="card-header text-center text-white" th:classappend="${'bg-'+colorForm}">
+                        <h5>[[${textoForm}]]</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class='mb-3'>
+                            <label>Filtrar descripcion De Categoria</label>
+                            <input type="text" name='textoDescripcion' th:value='${textoDescripcion}'
+                                   class='form-control'  required/>
+                        </div>
+                        <div class='mb-3'>
+                            <label>Cantidad minima de productos</label>
+                            <input type="number"  name='cantidadMinProductos' th:value='${cantidadMinProductos}'
                                    class='form-control' min="0" required/>
                         </div>
                     </div>
