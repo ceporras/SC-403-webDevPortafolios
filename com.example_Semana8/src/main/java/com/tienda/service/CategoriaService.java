@@ -65,4 +65,20 @@ public class CategoriaService {
         }
     }
     
+    //consulta derivada. NOTA: no se pasa cantidad min de productos activos por limitacion
+    @Transactional(readOnly = true)
+    public List<Categoria> consultaDerivadaCategoria(String textoDescripcion/*, int cantidadMinProductos*/){
+        return categoriaRepository.findDistinctByActivoIsTrueAndProductosActivoIsTrueAndDescripcionContaining( textoDescripcion/*,  cantidadMinProductos*/);
+    }
+    //consulta JPQL
+    @Transactional(readOnly = true)
+    public List<Categoria> consultaAdvCategoriaJPQL(String textoDescripcion, int cantidadMinProductos){
+        return categoriaRepository.consultaAdvCategoriaJPQL( textoDescripcion,  cantidadMinProductos);
+    }
+    //consulta SQL nativo
+    @Transactional(readOnly = true)
+    public List<Categoria> consultaAdvCategoriaSQL(String textoDescripcion, int cantidadMinProductos){
+        return categoriaRepository.consultaAdvCategoriaSQL( textoDescripcion,  cantidadMinProductos);
+    }
+    
 }
